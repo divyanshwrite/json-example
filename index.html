@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valorant Agents</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #121212;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #slider-container {
+            position: relative;
+            width: 650px;  /* Adjust the width to your preferred card size */
+            overflow: hidden;
+        }
+
+        #agents-list {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .agent {
+            background: rgb(49, 47, 47);
+            border: 1px solid #1b1a1a;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 0 20px;  /* Set margin for spacing */
+            flex: 0 0 550px;  /* Set card width */
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            color: aliceblue;
+        }
+
+        .agent:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .agent img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            z-index: 1;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .slider-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .prev-button {
+            left: -40px;
+        }
+
+        .next-button {
+            right: -40px;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="slider-container">
+        <!-- Slider buttons -->
+        <button class="slider-button prev-button">Previous</button>
+        <div id="agents-list"></div>
+        <button class="slider-button next-button">Next</button>
+    </div>
+    
+    <!-- Embed the JSON data as a script -->
+    <script id="agents-data" type="application/json">
+        {
+            "agents": [
+                {
+                    "name": "Brimstone",
+                    "ageRange": "45-50",
+                    "actor": "Steve Blum",
+                    "realName": "Liam Byrne",
+                    "country": "USA",
+                    "race": "Human",
+                    "role": "Soldier",
+                    "image": "https://www.proguides.com/guides/wp-content/uploads/2023/07/BrimstoneHeroTemp.png"
+                },
+                {
+                    "name": "Phoenix",
+                    "ageRange": "25-30",
+                    "actor": "Afolabi Alli",
+                    "realName": "–",
+                    "country": "UK",
+                    "race": "Human",
+                    "role": "Art School Student",
+                    "image": "https://www.pixground.com/wp-content/uploads/2023/08/Agent-Phoenix-Valorant-4K-Wallpaper-3-1081x608.jpg"
+                },
+                {
+                    "name": "Sage",
+                    "ageRange": "25-30",
+                    "actor": "Naomi Yang",
+                    "realName": "Ling Ying Wei",
+                    "country": "China",
+                    "race": "Human",
+                    "role": "Monk",
+                    "image": "https://cdnb.artstation.com/p/assets/images/images/036/460/607/large/hanjosi-sage-bulldog.jpg?1617735833"
+                },
+                {
+                    "name": "Sova",
+                    "ageRange": "30-35",
+                    "actor": "Aaron Vodovoz",
+                    "realName": "Alexander Novikov",
+                    "country": "Russia",
+                    "race": "Human",
+                    "role": "Hunter",
+                    "image": "https://www.strafe.com/esports-betting/strafe-news/wp-content/uploads/sites/29/sovafromvalorant.png"
+                },
+                {
+                    "name": "Viper",
+                    "ageRange": "30-35",
+                    "actor": "Ashly Burch",
+                    "realName": "Sabine Callas",
+                    "country": "USA",
+                    "race": "Human",
+                    "role": "Chief Scientific Officer",
+                    "image": "https://staticg.sportskeeda.com/editor/2022/06/2a8b6-16542341013296-1920.jpg"
+                },
+                {
+                    "name": "Cypher",
+                    "ageRange": "35-40",
+                    "actor": "Nabil Elouahabi",
+                    "realName": "Amir El Amari",
+                    "country": "Morocco",
+                    "race": "Human",
+                    "role": "Information Broker",
+                    "image": "https://w0.peakpx.com/wallpaper/832/118/HD-wallpaper-video-game-valorant-cypher-valorant.jpg"
+                }
+            ]
+        }        
+    </script>
+    
+    <script>
+        // Get the JSON data from the script tag
+        const agentsData = JSON.parse(document.getElementById('agents-data').textContent);
+
+        // Get the container where agents will be listed
+        const agentsList = document.getElementById('agents-list');
+
+        // Loop through each agent and create HTML for each one
+        agentsData.agents.forEach(agent => {
+            // Create a container for the agent's info
+            const agentDiv = document.createElement('div');
+            agentDiv.classList.add('agent');
+
+            // Create image element for the agent (if any)
+            const agentImage = agent.image ? `<img src="${agent.image}" alt="${agent.name}">` : '';
+
+            // Fill the agent info into the HTML structure
+            agentDiv.innerHTML = `
+                ${agentImage}
+                <h2>${agent.name}</h2>
+                <p><strong>Real Name:</strong> ${agent.realName || 'N/A'}</p>
+                <p><strong>Age Range:</strong> ${agent.ageRange}</p>
+                <p><strong>Actor:</strong> ${agent.actor}</p>
+                <p><strong>Country:</strong> ${agent.country}</p>
+                <p><strong>Race:</strong> ${agent.race}</p>
+                <p><strong>Role:</strong> ${agent.role || 'N/A'}</p>
+            `;
+
+            // Append the agent info to the main list
+            agentsList.appendChild(agentDiv);
+        });
+
+        // Slider functionality
+        const prevButton = document.querySelector('.prev-button');
+        const nextButton = document.querySelector('.next-button');
+
+        let currentIndex = 0;
+
+        // Get the width of each agent card (including margin-right)
+        const cardWidth = document.querySelector('.agent').offsetWidth + 40; // margin-right is 40px
+
+        // Update the position of the agent cards in the slider
+        function updateSliderPosition() {
+            agentsList.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
+        }
+
+        // Handle "Previous" button click
+        prevButton.addEventListener('click', () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateSliderPosition();
+            }
+        });
+
+        // Handle "Next" button click
+        nextButton.addEventListener('click', () => {
+            if (currentIndex < agentsData.agents.length - 1) {
+                currentIndex++;
+                updateSliderPosition();
+            }
+        });
+    </script>
+</body>
+</html>
